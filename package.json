@@ -10,5 +10,9 @@
     "javascript"
   ],
   "author": "Nishikant",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.1"
+  }
 }
