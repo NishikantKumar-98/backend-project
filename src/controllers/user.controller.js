@@ -2,6 +2,7 @@ import { APIerror } from "../utils/APIerror.js";
 import { asyncHandler} from "../utils/asyncHandler.js"
 import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { APIresponse } from "../utils/APIresponse.js";
 
 
 const registerUser = asyncHandler( async (req,res) => {
@@ -16,19 +17,19 @@ const registerUser = asyncHandler( async (req,res) => {
     //return res
 
     //get user details from frontend
-    const {fullName, email, username, password } = req.body
+    const {fullname, email, username, password } = req.body;
     console.log("email: ",email);
 
     // check that all fields are filled or not
    if(
-    [fullName,email,username,password].some((field) => field?.trim() ==="")
+    [fullname,email,username,password].some((field) => field?.trim() ==="")
    ){
 throw new APIerror(400, "All fields are required")
    }
 
 
 //check the user already exits or not
-const existedUser = User.findOne({
+const existedUser = await User.findOne({
     $or: [{username}, {email}]
 })
 
@@ -49,13 +50,13 @@ if(existedUser){
 const avatar = await uploadOnCloudinary(avatarLocalPath)
 const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
-if(!avatar){
+if(!avatar ){
     throw new APIerror(400, "Avatar file is required")
 }
 
     //create user object- create entry in db
 const user = await User.create({
-    fullName,
+    fullname,
     avatar: avatar.url,
     coverImage: coverImage.url || "",
     email,
@@ -73,7 +74,7 @@ if(!createdUser) {
 
 
 return res.status(201).json(
-    new APIResponse(200, createdUser, "User registered Successfully")
+    new APIresponse(200, createdUser, "User registered Successfully")
 )
 } )
 
