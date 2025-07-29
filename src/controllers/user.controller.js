@@ -294,7 +294,7 @@ if(!avatar.url){
 }
 
 const user = await User.findByIdAndUpdate(
-    req.user?._id
+    req.user?._id,
     {
         $set:{
             avatar:avatar.url
@@ -324,7 +324,7 @@ if(!CoverImage.url){
 }
 
 const user = await User.findByIdAndUpdate(
-    req.user?._id
+    req.user?._id,
     {
         $set:{
             CoverImage:CoverImage.url
